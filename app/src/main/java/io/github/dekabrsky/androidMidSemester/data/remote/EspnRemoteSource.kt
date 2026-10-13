@@ -1,17 +1,17 @@
-package io.github.dekabrsky.androidMidSemester.data.repository
+package io.github.dekabrsky.androidMidSemester.data.remote
 
 import io.github.dekabrsky.androidMidSemester.data.api.ESPNApi
+import io.github.dekabrsky.androidMidSemester.data.api.SStatsApi
+import io.github.dekabrsky.androidMidSemester.data.mapper.toMatch
 import io.github.dekabrsky.androidMidSemester.domain.model.Match
-import io.github.dekabrsky.androidMidSemester.domain.repository.MatchRepository
 import toMatch
 import toMatches
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class EspnMatchRepositoryImpl(
-    private val api: ESPNApi,
-) : MatchRepository {
-
+class EspnRemoteSource(
+    val api: ESPNApi
+) : RemoteSource {
     override suspend fun matchesOn(date: LocalDate): List<Match> =
         api.getScoreboard(ESPNApi.DEFAULT_LEAGUE,date.format(DateTimeFormatter.BASIC_ISO_DATE)).toMatches()
 
